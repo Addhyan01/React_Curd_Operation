@@ -22,6 +22,11 @@ export default function Teacher() {
     },
     ])
 
+    const [payload,setpayload] = useState({
+        "data" :{
+            "name" : "Gautam"
+        }
+    })
 
 
 
@@ -31,6 +36,30 @@ export default function Teacher() {
 
     useEffect(() => {
         //what you write here will be excuted after the pageload
+
+        
+            fetch(`http://localhost:1337/api/techers`,{
+                "method" : "POST",
+                "headers" : {
+                    "Content-Type" : "application/json"
+                },
+                "body" : JSON.stringify(payload)
+            })
+            // i want to covert the respone in json file
+            .then((res)=>{
+                return res.json})
+            .then((data)=>{
+                console.log(data)
+            })
+            .catch((err)=>{
+                console.log(
+                    console.log(err)
+                )
+            })
+        
+       
+
+
 
         fetch(`http://localhost:1337/api/techers`)
             .then((res) => {
@@ -78,7 +107,7 @@ export default function Teacher() {
                         <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                         <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="button"  className="btn btn-primary">Submit</button>
                 </form>
                 <br />  <br />
                 <hr />
