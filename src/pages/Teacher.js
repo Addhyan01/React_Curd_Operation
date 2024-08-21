@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Swal from 'sweetalert2';
 
 export default function Teacher() {
     //This is hook area 
@@ -55,11 +56,13 @@ export default function Teacher() {
             })
             .catch(() => { });
 
+            
+
     }, []);
 
 
 
-    let anil = () => {
+    let sendData = () => {
 
         fetch(`http://localhost:1337/api/techers`,{
             "method" : "POST",
@@ -70,8 +73,16 @@ export default function Teacher() {
         })
         // i want to covert the respone in json file
         .then((res)=>{
-            return res.json})
+            return res.json() })
         .then((data)=>{
+            if(data){
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Teacher Created",
+                    icon: "success"
+                  });
+            }
+            console.log(data);
             
         })
         .catch((err)=>{
@@ -81,7 +92,7 @@ export default function Teacher() {
         })
     }
 
-    let sunil = (event) =>{
+    let changeValue = (event) =>{
         console.log(event.target.value);
         setTeacherName(event.target.value);
         console.log('teacher',teacherName)
@@ -91,6 +102,7 @@ export default function Teacher() {
                 name:document.querySelector('input#teachername').value
             }
         })
+
 
     }
     //Every hook is function
@@ -109,11 +121,11 @@ export default function Teacher() {
                     <h1>Login page</h1>
                     <div className="mb-3 ">
                         <label htmlFor="teachername" className="form-label">Teacher Name</label>
-                        <input type="text" className="form-control" id="teachername" name='teachername'  onKeyUp={(e)=>{sunil(e)}} />
+                        <input type="text" className="form-control" id="teachername" name='teachername'  onKeyUp={(e)=>{changeValue(e)}} />
                         
                     </div>
                    
-                    <button type="button" onClick={()=>{anil()}} className="btn btn-primary">Submit</button>
+                    <button type="button" onClick={()=>{sendData()}} className="btn btn-primary">Submit</button>
                 </form>
                 <br />  <br />
                 <hr />
