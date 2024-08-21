@@ -22,11 +22,13 @@ export default function Teacher() {
     },
     ])
 
-    const [payload,setpayload] = useState({
+    const [payload,setPayload] = useState({
         "data" :{
             "name" : "Gautam"
         }
     })
+
+    const [teacherName, setTeacherName] = useState('')
 
 
 
@@ -36,31 +38,6 @@ export default function Teacher() {
 
     useEffect(() => {
         //what you write here will be excuted after the pageload
-
-        
-            fetch(`http://localhost:1337/api/techers`,{
-                "method" : "POST",
-                "headers" : {
-                    "Content-Type" : "application/json"
-                },
-                "body" : JSON.stringify(payload)
-            })
-            // i want to covert the respone in json file
-            .then((res)=>{
-                return res.json})
-            .then((data)=>{
-                console.log(data)
-            })
-            .catch((err)=>{
-                console.log(
-                    console.log(err)
-                )
-            })
-        
-       
-
-
-
         fetch(`http://localhost:1337/api/techers`)
             .then((res) => {
                 //This block make res json redable
@@ -73,13 +50,49 @@ export default function Teacher() {
                     name: cv.attributes.name,
                     createdAt: cv.attributes.createdAt,
                     }
-    
                 });
                 setTeachers(newaao)
             })
             .catch(() => { });
 
-    }, [])
+    }, []);
+
+
+
+    let anil = () => {
+
+        fetch(`http://localhost:1337/api/techers`,{
+            "method" : "POST",
+            "headers" : {
+                "Content-Type" : "application/json"
+            },
+            "body" : JSON.stringify(payload)
+        })
+        // i want to covert the respone in json file
+        .then((res)=>{
+            return res.json})
+        .then((data)=>{
+            
+        })
+        .catch((err)=>{
+            console.log(
+                console.log(err)
+            )
+        })
+    }
+
+    let sunil = (event) =>{
+        console.log(event.target.value);
+        setTeacherName(event.target.value);
+        console.log('teacher',teacherName)
+        setPayload({
+            ...payload,
+            data: {
+                name:document.querySelector('input#teachername').value
+            }
+        })
+
+    }
     //Every hook is function
     //useEffect is for page Load
     // I want to call this Api after the page load
@@ -95,19 +108,12 @@ export default function Teacher() {
                 <form>
                     <h1>Login page</h1>
                     <div className="mb-3 ">
-                        <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-                        <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+                        <label htmlFor="teachername" className="form-label">Teacher Name</label>
+                        <input type="text" className="form-control" id="teachername" name='teachername'  onKeyUp={(e)=>{sunil(e)}} />
+                        
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                        <input type="password" className="form-control" id="exampleInputPassword1" />
-                    </div>
-                    <div className="mb-3 form-check">
-                        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                        <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
-                    </div>
-                    <button type="button"  className="btn btn-primary">Submit</button>
+                   
+                    <button type="button" onClick={()=>{anil()}} className="btn btn-primary">Submit</button>
                 </form>
                 <br />  <br />
                 <hr />
